@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Beginners</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand&display=swap">
+    <style>
+        body{
+            margin: 5%;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .active{
+            background: salmon;
+            border: 0;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body >
+    
+    <div id="app">
+        <header>
+            <img src="image/markaz.jpg" width="80">
+            <h1>{{ getname() }}</h1>
+            <!-- <h2>{{ totalBayar }}</h2> -->
+            <h2>{{ namaLengkap }}</h2>
+            <h1 v-once>{{ name + ' ' + status }}</h1>
+            <h2>{{ name.toUpperCase() }}</h2>
+            <h2>{{ status }}</h2>
+            <div style="background-color: aqua;">
+                {{ isactive ? name : status }}
+            </div>
+            <p>The Progressive JavaScript Framework</p>
+
+            <p>{{ bilangan }}</p>
+            <p>bilangan tersebut bernilai {{ jenisBilangan }}</p>
+            <p v-html="link"></p>
+
+            <!-- directive binding, v-bind bisa di singkat dengan hanya menuliskan : -->
+            <img v-bind:src="image" width="300"> 
+            <img :src="image" width="300"> 
+            
+            <p v-text="bilangan"></p>
+            <p v-text="jenisBilangan"></p>
+            <p>
+                <button @click="handleClick">Tekan</button>
+            </p>
+
+            <p>
+                <button @click="alert">Click</button>
+            </p>
+            <br>
+
+            <span v-text="namaDepan + namaBelakang.toUpperCase()"></span> <br>
+
+            <p>
+                <input type="text" v-model="name">
+            </p>
+
+            <p>
+                <input type="text" v-model="kelas">
+            </p>
+            <p>{{ kelas.toUpperCase() }}</p>
+
+            <p>
+                <!-- <h3>{{ checkboxClass.toString() }}</h3> -->
+                <h3>{{ checkboxClass.join(', ') }}</h3>
+            </p>
+
+            <ul v-if="checkboxClass.length > 0">
+                <li v-for="(bahasa, index) in checkboxClass">{{ index + 1 }} - {{ bahasa }}</li>
+            </ul>
+                <li v-else>Sedang Kosong</li>
+
+            <h4>Bilangan 1 - 5</h4>
+
+            <ul>
+                <li v-for="x in 5" v-text="x"></li>
+            </ul>
+
+            <h3>Daftar Mahasiswa</h3>
+
+            <!-- <div v-for="(m, index) in mahasiswa">
+                <p>{{ index+1 }}</p>
+                <h2 v-text="m.nama"></h2>
+                <h3 v-text="m.alamat"></h3>
+            </div> -->
+
+            <ul v-for="m in mahasiswa">
+                <li>{{ m.nama }} - {{ m.alamat }}</li>
+            </ul>
+
+            <h3>Mencari bilangan genap : {{ number }}</h3>
+
+            <ul>
+                <li v-for="n in getNumberEven(number)" v-text="n"></li>
+            </ul>
+
+            <p>
+                <label>
+                    <input type="checkbox" v-model="checkboxClass" value="React"> React
+                </label>
+                
+                <label>
+                    <input type="checkbox" v-model="checkboxClass" value="VueJS"> VueJS
+                </label>
+
+                <label>
+                    <input type="checkbox" v-model="checkboxClass" value="Angular"> Angular
+                </label>
+
+            </p>
+
+            <!-- Membuat menu menggunakan class binding cara pertama -->
+
+            <button v-bind:class="{ active: menuSatu === 'home' }" v-on:click=" menuSatu = 'home' ">Satu</button>
+            <button v-bind:class="{ active: menuSatu === 'about' }" v-on:click=" menuSatu = 'about' ">Dua</button>
+            <button v-bind:class="{ active: menuSatu === 'blog' }" v-on:click=" menuSatu = 'blog' ">Tiga</button>
+
+            <br><br>
+            <!-- Membuat menu menggunakan function -->
+
+            <button :class="homeObject" @click="menu = 'home'">Home</button>
+            <button :class="aboutObject" @click="menu = 'about'">About</button>
+            <button :class="blogObject" @click="menu = 'blog'">Blog</button>
+        </header>
+    
+        <h3>Daftar Prodi : {{ prodi.length }}</h3>
+
+        <ul v-if="prodi.length > 0">
+            <li v-for="(x, index) in prodi">{{ index + 1 }} - {{ x }}</li>
+        </ul>
+            <li v-else>Kelas Tidak Tersedia</li>
+
+
+        <h4>Menampilkan data menggunakan v-show</h4>
+
+        <ul v-show="prodi.length > 10">
+            <li v-for="p in prodi" v-text="p"></li>
+        </ul>
+
+        <!-- Ulasan Event Handling -->
+
+        <button @click="counter += 1">Click Me</button>
+        <p>{{ counter }}</p>
+
+        <button @click="buttonClick">Click Again</button>
+
+        <button @click="say('halo')">Say</button>
+        <button @click="say('halo lagi')">Say it</button>
+
+        <button v-on:click="warn('This message with method preventDefault', $event)">Button preventDefault()</button>
+
+        <button @keyup.enter="key">Tekan Dong</button>
+        <br><br>
+
+        <!-- Penggunaan Object Event -->
+
+        <a :class="{ active: menuSatu === 'home' }" href="#" @click="menuDinamis('home', $event)">Home</a>
+        <a :class="{ active: menuSatu === 'about'}" href="#" @click="menuDinamis('about', $event)">About</a>
+        <a :class="{ active: menuSatu === 'blog'}" href="#" @click="menuDinamis('blog', $event)">Blog</a>
+        <footer>
+            <p>Copyright 2023</p>
+        </footer> 
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
+    <script> 
+
+        // el berarti elemen root, gak boleh nama lain harus wajib el, maksudnya elemen #app yang berada di el maka disitu yang bisa di manipulasi tampilan dan datanya
+        // properti sampai saat ini ada 2 yaitu el dan data
+
+        /* ============================================= membuat data ada 2, cara 1 seperti dibawah, / data ========================================= */
+        const vm = new Vue({
+            el: '#app',
+            data:{
+                // data bisa berupa string, number, boolean, array, object
+                name: 'Didi Riwanda',
+                status: "Mahasiswa",
+                isactive: false,
+                qty: 1,
+                namaDepan: "Dion ",
+                namaBelakang: "Pangendra",
+                bilangan: 10,
+                link: '<a href="">didi.riwanda</a>',
+                image: 'image/1.png',
+                menuSatu: 'home',
+                menu: 'home',
+                checkboxClass: [],
+                kelas: '',
+                prodi: ['TI', 'SI', 'ILKOM'],
+                number: [1, 2, 3, 4, 5],
+                mahasiswa: [
+                    {nama: 'Didi Riwanda', alamat: 'Pekanbaru'},
+                    {nama: 'Nosi Pendriani', alamat: 'Taluk Kuantan'}
+                ],
+                counter: 0
+            },
+            methods: {
+                getname: function(){
+                    return "Hello, I'm " +this.name+ " , and i'm " +this.status
+                },
+                // bisa tambah method lain
+
+                ubahNama: function(namaBaru, statusBaru){
+                    this.name = namaBaru, // bisa pakai koma bisa juga enggak
+                    this.status = statusBaru
+                    return this.getname()
+                },
+
+                handleClick: function(){
+                    this.bilangan++
+                    this.image = 'image/2.png'
+                },
+                alert: function(){
+                    return alert('Halo nama saya ' + this.name)
+                },
+                getNumberEven: (data) => {
+                    return data.filter(angka => {
+                        return angka % 2 === 0
+                    })
+                },
+                buttonClick: function(event) {
+                    // alert('Hello' + this.name)
+                    confirm('Hello ' + this.name + '! My Name is ' + this.namaDepan)
+
+                    if(event){
+                        alert(event.target.tagName)
+                    }
+                },
+                say: function(message) {
+                    alert(message)
+
+                    if(event){
+                        alert(event.target.tagName)
+                    }
+                },
+                warn: function(message, event){
+                    if(event){
+                        event.preventDefault()
+                    }
+
+                    alert(message)
+                },
+                key: function() {
+                    alert('antum menekan tombol ' + event.key)
+                },
+                menuDinamis: function(message, event){
+                    event.preventDefault()
+                    this.menuSatu = message
+                }
+
+            },
+            computed: {
+                totalBayar: function(){
+                    return this.qty * 50000
+                },
+                namaLengkap: function(){
+                    var nama = this.namaDepan + this.namaBelakang
+                    return nama.split('').reverse().join('')
+                },
+                jenisBilangan: function(){
+                    var jenis = this.bilangan%2 === 0 ? 'Genap' : 'Ganjil'
+                    return jenis
+                },
+                homeObject: function(){
+                    return{
+                        active : this.menu === 'home'
+                    }                  
+                },
+                aboutObject: function(){
+                    return{
+                        active : this.menu === 'about'
+                    }                  
+                },
+                blogObject: function(){
+                    return{
+                        active : this.menu === 'blog'
+                    }                  
+                },
+            }
+        })
+
+        /* ======================================================== atau cara 2 deklarasikan dlu diatas. ======================================================== */
+
+        // const member = {
+        //     name: 'Dio Rianda',
+        //     status: "TNI AU"
+        // }
+
+        // const vm = Vue({
+        //     el: '#app',
+        //     data: member
+        // })
+
+        /* ======================================================== Menampilkan data di console / akses object vue ============================ */
+
+        // vm (sebagai variable) kemudian enter
+        // vm.$data.{elemen}, contoh : vm.$data.name = 'Dio Rianda' => mengganti elemen text yang lama dengan yang baru
+
+        // vm.$el.innerHTML = '<h1>Didi Riwanda</h1>'   => mengganti seluruh elemen html dengan text h1
+        // vm.$el.innerHTML = '<h1>'+vm.$data.name+'</h1'
+
+        /* ======================================================== Menampilkan data di template html / binding expression ============================ */
+
+        // menggunakan {{  }} => kelebihan vue sendiri yaitu live berubah
+        // kalau mau suatu elemen tidak bisa di ubah maka tambahkan attribute v-once
+
+        /* ======================================================== JavaScript expression ======================================================== */
+
+        // {{ name + ' ' + status }} atau {{ name + ' Riwanda' }} => menggabungkan 2 data dan kemudian ditampilkan di browser, bisa juga tampilkan operasi matematika seperti {{ 1+1 }}
+        // {{ name.toUpperCase() }} => mengubah data pada variabel name menggunakan method pada JS
+        // {{ isactive ? 'success' : 'danger' }} => menggunakan ternary pada variable isactive yang terdapat di elemen data
+
+        /* ======================================================== Method ======================================================== */
+        
+        // membuat method atau function agar bisa dipanggil atau digunakan di elemen html,
+        /*
+            const vm = new Vue({
+                el: '#app',
+                data:{
+                    name: 'Didi Riwanda'
+                },
+                methods:{
+                    getname: function(){
+                        return 'Hello, ' +this.name
+                    }
+                }
+            })
+        */
+
+        /* ======================================================== Parameter ======================================================== */
+
+        // didalam method kita bisa membuat banyak function, function bisa memiliki parameter, parameter wajib diisi pada saat kita ingin mengakses function melalui consolse maupun html template.
+        // didalam function jika kita ingin mengakses variable di luar function atau ingin mengakses function tertentu didalam function (function didalam function), maka kita menggunakan keyword this.
+        // diconsole kalau mau akses function yang memiliki parameter = vm.ubahnama("Dio Rianda")
+
+        /*
+            data: {
+                nama: "Didi Riwanda"
+            },
+            methods: {
+                nama: function(){
+                    return this.nama
+                }
+                ubahnama: function(namabaru){
+                    this.nama = namabaru
+                    return this.nama()
+                }
+            }
+        */
+
+        /* ======================================================== Computed Property ======================================================== */
+
+        // sebenarnya function di computed properti sama dengan function di methods. hanya saja computed properti digunakan untuk membuat function yang lebih spesifik dimana suatu data dapat berubah secara realtime apabila dilakukan pengubahan.
+        // cara mencetak methods dan computed properti juga berbeda, methods = {{ namaFungsi() }} sedangkan computed properti = {{ namaFungsi }}
+        // computed properti dapat memendekkan penulisan code pada saat ingin menampilkan data di html template atau menyederhanakan penulisan pencetakan data di html template nya.
+        /*
+            dari pada kita menuliskan di html <h1>{{ data.toLowerCase() }}</h1>, kita bisa menuliskan terlebih dahulu di computed properti dan kemudian mencetak di html template function tsb.
+
+            computed: {
+                hurufBesar: function(){
+                    return this.data.toLowerCase()
+                }
+            }
+
+            di html kita bisa panggil functionnya saja, <h1>{{ hurufBesar }}</h1>
+        */
+
+        /* 
+            ======================================================== penulisan function di javascript ======================================================== 
+
+            1. function namaFungsi(){
+                console.log(alert('asdka'))
+            }
+
+            2. var namaFungsi = function(){
+                console.log(alert('asdka'))
+            }
+
+            3. var namaFungsi = () => {
+                console.log(alert('asdka'))
+            }
+        */
+        
+        /* ======================================================== Latihan Computed Property ======================================================== */
+
+        // bisa menggunakan ternary atau operasi js lain seperti menggunakan function yang tersedia di js, seperti toUpperCase(), toLowerCase(), reverse(), split(), join(), dll
+
+        /* ======================================================== Tentang Directive ======================================================== */
+
+        // v-once = membuat suatu elemen html tidak bisa diubah datanya
+        // v-text = menampilkan data tetapi jika didalam data tersebut ada elemen html, maka tag html tsb tidak akan dieksekusi alias di tampikan.
+            /*
+                data: {
+                    link: '<h1>Didi Riwanda</h1>'
+                }
+
+                jika memakai v-text maka outputnya adalah <h1>Didi Riwanda</h1>
+            */
+
+        // v-html = menampikan data tetapi jika di dalam data tsb ada elemen html maka elemen html tsb akan di eksekusi
+
+            /*
+                data: {
+                    link: '<h1>Didi Riwanda</h1>'
+                }
+
+                jika memakai v-html maka outputnya adalah Didi Riwanda
+            */  
+           
+        // directive tersebut bisa memanggil variable data maupun nama function yang di buat
+        // directive di vue js di tempelkan di elemen html, v-
+        // setiap directive akan mempunyai fungsi masing-masing
+        // v-text mampu melakukan binding data atau mencetak data
+        // v-text sama dengan {{  }} 
+
+        // v-text dan v-html sama dengan menggunakan innerHTML dan innerText di DOM JavaScript
+
+        /* ======================================================== Directive Binding ======================================================== */
+
+        // directive yang dimiliki oleh vue js juga mampu menggunakan fungsi yang terdpat di javascript, maupun fungsi yang kita buat sendiri di vue js nya.
+        // contoh : v-text="link.toUpperCase()" atau v-text="bilangan*6" atau bahkan melakukan ternary
+
+        /* ======================================================== Atribute Binding ======================================================== */
+
+        // {{  }} ini gak bisa di gunakan di dalam atribute html, dia hanya bisa di gunakan didalam tag html.
+        // contoh : <h1 class="{{ namaData }}"></h1> ini akan error karena {{  }} gak bisa digunakan di dalam atribute html, <h1>{{ namaData }}</h1> tapi kalau gini mau dia
+        // nah untuk mengatasinya kita bisa menggunakan directive v-bind di ikuti atribute html yang kita inginkan, contoh : v-bind:src="" atau v-bind:class="", dan lain lain
+        // v-bind = atribute yang digunakan untuk membinding data atau menampikan data di dalam atribute html
+        // v-bind mempunyai shorthand atau penulisan singkat yaitu cukup dengan menuliskan :, contoh : v-bind:src="" sama saja dengan :src=""
+
+        /* =================================================================== Event =============================================================== */
+
+        // event di javascript juga bisa di gunakan di vue js, beberapa event seperti on-click, on-mousemove, dan lain lain
+        // di vue js untuk menggunakan event kita bisa menggunakan atribute v-on, atau shorthand nya adalah @
+        // contoh : v-on:click="namaFungsi" atau @click="namaFungsi"
+
+        /* ======================================================== Class Binding ======================================================== */
+
+        // <div v-bind:class="{ active: isactive }"></div>
+        // kalau isactive bernilai true, maka tambahkan class active didalam div tersebut
+
+        /* 
+        
+            data: {
+                isactive: true
+            }
+
+        */
+
+        // contoh kedua :
+
+        // <div class="static" v-bind:class="{ active: isActive, 'text-danger': hasError }"></div>
+        
+        /* 
+        
+            data: {
+                isActive: true,
+                hasError: false
+            }
+
+        */
+
+        // output dari data diatas adalah : <div class="static active"></div>
+
+        // atau cara ketiga jika membuat class binding atau menambahkan class adalah :
+
+        // <div v-bind:class="classObject"></div>
+
+         /* 
+        
+            data: {
+                classObject: {
+                    isActive: true,
+                    hasError: false
+                }
+            }
+
+        */
+
+        // maka outputnya adalah : <div class="isactive"></div>
+
+
+        // untuk cara ketiga jika ingin menampilkan semua class tanpa ada kondisi tertentu berdasarkan value dari variable di data, caranya adalah :
+
+        // <div v-bind:class="[ activeClass, errorClass]"></div>
+
+        /*
+            
+            data: {
+                activeClass: 'active',
+                errorClass: 'text-danger'
+            }
+            
+        */
+
+        // maka akan menghasilkan output : <div class="active text-danger"></div>
+
+        /* ======================================================== Latihan Class Binding ======================================================== */
+
+        // membuat menu yang dimana saat di klik menu tertentu akan menambahkan class yang diinginkan, kita bisa menambahkan variable di properti data yang berisi string menu yang diinginkan. contoh :
+
+        /*
+        
+            data: {
+                home: 'about'
+            }
+        
+        */
+
+        // <button v-bind:class="{ active : home === 'about'}"></button>, jika menu di data adalah about maka button about tambahkan class active
+        // untuk membuat button tersebut berganti warna apabila di klik maka di elemen html nya di tambahkan directive v-on:click, contoh nya seperti dibawah:
+        // <button v-bind:class="{ active: menu === 'home'}" v-on:click=" menu = 'home' ">home</button>
+        
+
+        // cara kedua bisa menggunakan function
+
+        /*
+
+            <button :class="homeObject" @click="menu = 'home'">Home</button>
+            <button :class="aboutObject" @click="menu = 'about'">About</button>
+            <button :class="blogObject" @click="menu = 'blog'">Blog</button>
+
+            untuk v-bind:class menambahkan function di computed property
+
+            computed: {
+                homeObject: function(){
+                    return{
+                        active : this.menu === 'home'
+                    }                  
+                },
+                aboutObject: function(){
+                    return{
+                        active : this.menu === 'about'
+                    }                  
+                },
+                blogObject: function(){
+                    return{
+                        active : this.menu === 'blog'
+                    }                  
+                }    
+            }
+        */
+
+        /* ======================================================== Two Way Data Binding ======================================================== */
+
+        // Two way data binding di sini maksudnya adalah dimana saat kita melakukan input data di inputan, maka data di model juga ikut berubah.
+        // di vue ada directive v-model, directive ini di letakkan di elemen input html yang kita inginkan dengan menyertakan data di model nya. contoh :
+
+        /*
+        
+            data: {
+                message: ''
+            }    
+
+            <input type="text" v-model="message">
+            <p>{{ message }}</p>
+
+            maka saat kita mengetik sesuatu di elemen input, maka akan tampil di tag <p></p> tersebut data yang kita ketikkan.
+
+            // contoh 2 :
+
+            data: {
+                kelas: []
+            }
+
+            <label>
+                <input type="checkbox" v-model="kelas" value="React"> React
+            </label>
+                
+            <label>
+                <input type="checkbox" v-model="kelas" value="VueJS"> VueJS
+            </label>
+
+            <label>
+                <input type="checkbox" v-model="kelas" value="Angular"> Angular
+            </label>            
+
+            <p>{{ kelas.join(', ') }}</p>
+
+            maka data di check akan tampil di elemen <p></p> tersebut, fungsi join() merupakan fungsi yang merubah elemen array menjadi string, ada juga fungsi toString()
+
+        */
+
+        /* ======================================================== Directive Perulangan v-for ======================================================== */
+
+        // directive v-for dapat digunakan di elemen html sebagai atribut, contoh :
+        /*
+            
+            <ul>
+                <li v-for="k in kelas">{{ k }}</li>    
+            </ul>
+
+            data: {
+                kelas: []
+            }
+            
+        */
+
+        /* ======================================================== Mengakses Index ======================================================== */
+
+        // untuk mengakses index dari suatu data array di dalam data, bisa dengan menambahkan sebuah elemen di dalam v-for, contoh :
+        /*
+        
+        <h3 v-for="(m, index) in mahasiswa" v-text="m"></h3>
+
+        agar index bisa menjadi nomor di halaman maka kita bisa cetak dengan menambahkan increment di v-text nya, contoh :
+
+            <h3 v-text="index + 1"></h3>, ini akan mencetak index nya di mulai dari 0
+        
+        */
+        
+        /*
+            
+        data: {
+            mahasiswa: [
+                {nama: 'Didi', alamat: 'Pekanbaru'},
+                {nama: 'Dio', alamat: 'Taluk Kuantan'}
+            ]
+        }
+        
+        untuk mencetak data array bersarang seperti diatas caranya adalah :
+
+        <ul v-for="m in mahasiswa">
+            <li>{{ m.nama }} - {{ m.alamat }}</li>
+        </ul>
+        */
+
+        /* ======================================================== Latihan Directive v-for ======================================================== */
+
+        // jika kita ingin membuat suatu fungsi yang dapat menampilkan data angka, dimana angka yang ditampilkan hanyalah angka genap atau ganjil saja, maka kita bisa membuat seperti ini :
+
+        /*
+
+        <ul>
+            <li v-for="x in checkNumber(number)" v-text="x"></li>
+        </ul>
+
+        data: {
+            number: [1, 2, 3, 4, 5]
+        },
+        methods: {
+            checkNumber: (number) => {
+                return number.filter( index => {
+                    return index % 2 === 0
+                })
+            }
+        }
+        
+        - yang perlu diperhatikan adalah parameter (number) di dalam function checkNumber boleh berbeda dengan variable number di data, tapi kalau sama juga gapapa.
+
+        - jadi di sini kita menggunakan function checkNumber(number) di elemen li, kemudian number yang di inputkan di data maka di filter satu persatu terlebih dahulu, kemudian di lakukan modulus setelah itu di tampilkan.
+        */
+
+        /* ======================================================== Conditional Rendering | Directive v-else ======================================================== */
+
+
+        // Didalam vue ada directive conditional yang bernama v-if, directive ini bisa kita gunakan jika kita ingin menampilkan data berdasarkan kondisi, contoh, apabila di suatu variable terdapat data maka data tersebut akan ditampilkan, jika tidak ada maka akan muncul pesan.
+        // contoh :
+        /*
+
+            <ul v-if="kelas.length > 0">
+                <li v-for="k in kelas" v-text="k"></li>
+            </ul>
+
+            data: {
+                kelas: ['TI', 'SI']
+            }
+
+            untuk directive v-else, kita harus meletakkan v-else setelah tag yang ditarok v-if, sebagai contoh :
+
+            <ul v-if="kelas.length > 0">
+                <li v-for="k in kelas" v-text="k"></li>
+            </ul>
+            <ul v-esle>
+                <li>Data Tidak Ada</li>
+            </ul>
+
+        */
+
+        /* ======================================================== Directive v-show ======================================================== */
+
+        // directive ini akan membuat suatu elemen di tampilkan atau di sembunyikan jika memenuhi syarat, perbedaan antara v-show dengan v-if adalah, v-show akan mengubah suatu elemen displaynya none, sementara v-if betul betul menghilangkan elemen tersebut. contoh :
+
+        /*
+
+        <ul v-show="kelas.length > 0">
+            <li v-for="k in kelas" v-text="k"></li>
+        </ul>
+            
+        data: {
+            kelas: ['TI', 'SI']
+        }
+        
+        */
+
+        /* ======================================================== Elemen Template ======================================================== */
+
+        // didalam vue js ada tag <template></template>, tag ini memiliki fungsi yang sama dengan tag div, dimana tang <template></template> ini hanya sebagai pengelompok untuk tag tag yang akan dijadikan kondisi atau semacamnya.
+        // jika di inspect elemen maka sikap nya akan sama dengan elemen div atau span, yaitu tidak akan terlihat
+
+        /* ======================================================== Ulasan Directive if ======================================================== */
+
+        // v-show tidak akan berjalan di elemen <template></template>, v-show juga gak akan jalan kalau digabungkan dengan v-else
+        // ada key yang perlu di pahami dikit
+
+        /* ======================================================== List Rendering Object ======================================================== */
+
+        // di vue kita bisa menampilkan data dalam bentuk array biasa maupun array bersarang, contoh :
+
+        /*
+
+            data: {
+                object: [
+                    {name: 'Didi Riwanda', class: '7'}
+                ]
+            }
+
+            <ul v-for="(key, value, index) in object">
+                <li>{{ index+1 }} - {{ value.nama }}</li>    
+            </ul>
+        
+        */
+
+        /* ======================================================== Ulasan Event Handling ======================================================== */
+
+        // event di javascript cukup banyak, diantaranya on-click, on-mousemove, on-keydown, dan lain lain.
+        // untuk jenis event yang bisa di gunakan bisa dilihat disini : https://nulis-ilmu.com/javascript-macam-macam-event-html-dom/
+        // contoh :
+ 
+        // contoh 1: 
+
+        /*
+            
+        data: {
+            counter: 0
+        }
+
+        <button @click="counter += 1">Click</button>
+        <p>Tombol telah anda tekan sebanyak {{ counter }} kali</p>
+
+        pada contoh diatas, logika program kita tulis di elemen html, tapi lebih baik logika nya kita letakkan di dalam method / function
+
+        // contoh 2 :
+
+        data: {
+            name: 'Me'
+        },
+        methods: {
+            count: function(event){
+                alert(this.name)
+
+                if(event){
+                    alert(event.target.tagName)
+                }
+            }
+        }
+
+        <button @click="count>Click</button>
+        
+
+        // contoh 3: 
+    
+        di dalam method juga bisa kita letakkan parameter tambahan, ada parameter yang bisa kita buat sendiri, dan ada juga parameter global seperti $event
+
+        data: {
+            name: 'Me'
+        },
+        methods: {
+            count: function(message, event){
+                if(event){
+                    event.preventDefault()
+                    alert(message)
+                }
+            }
+        }
+
+        <button @click="count('Hello', $event)">Click</button>
+        */
+
+        // selain itu juga ada event modifier seperti .stop untuk menghentikan function yang dipanggil, atau ada juga .once yang berfungsi hanya sekali dan tidak bisa di panggil lagi fungsinya
+
+        // contoh :
+
+        /*
+        
+        <button @click.once="count('Hello', $event)">Click</button>
+        
+        */
+
+        /* ======================================================== Penggunaan Object Event ======================================================== */
+
+    </script>
+    
+</body>
+</html>
+

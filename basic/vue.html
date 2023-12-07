@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue JS with Template</title>
+</head>
+<body>
+
+    <div id="app">
+        <template v-if="kampus.length > 0">
+            <h3>Data Kampus Universitas Islam Kuantan Singingi : {{ kampus.length }}</h3>
+
+            <div v-for="k in kampus">
+                <p>{{ k.fakultas }} ini memiliki prodi {{ k.prodi }}</p>
+            </div>
+        </template>
+        <template v-else>
+            <h4>Silahkan Isi Data Kampus Tersebut</h4>
+        </template>
+
+        <ul v-for="(value, name) in object">
+            <li>{{ value.nama }} - {{ name }}</li>
+        </ul>
+
+    </div>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                kampus: [
+                    { fakultas: 'Teknik', prodi: 'Teknik Informatika'},
+                    { fakultas: 'FMIPA', prodi: 'Biologi'},
+                    { fakultas: 'FKIP', prodi: 'Matematika'},
+                    { fakultas: 'FIS', prodi: 'Ilmu Hukum'}
+                ],
+
+                object: [
+                    {
+                        nama: 'Didi Riwanda',
+                        alamat: 'Pekanbaru'
+                    }
+                ]
+            }
+        })
+    </script>
+
+</body>
+</html> 

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>key in directive v-if</title>
+    <style>
+      div{
+        margin: 10px;
+      }
+      .active{
+        padding: 5px;;
+        background-color: salmon;
+        text-decoration: none;
+        border-radius: 7px;
+        color: black;
+      }
+
+      .notActive:hover{
+        color: white;
+        background-color: black;
+        padding: 5px;
+        border-radius: 7px;
+        text-decoration: none;
+      }
+
+      .notActive{
+        padding: 5px;
+        text-decoration: none;
+      }
+      
+    </style>
+  </head>
+  <body>
+    
+    <div id="app">
+          <div>
+            <template v-if="loginType">
+              <label>Username</label>
+              <input placeholder="Enter your username" key="username-input" />
+            </template>
+            <template v-else>
+              <label>Email</label>
+              <input placeholder="Enter your email address" key="email-input" />
+            </template>      
+  
+            <button @click="change">ubah</button>
+  
+            <!-- event handling -->
+            <button @click="typeButton($event)">Click</button>  
+          </div>
+
+          <div>
+            <a href="#" class="notActive" :class="{active: titleMenu === 'home', notActive: titleMenu !== 'home'}" @click="changeMenu('home', $event)">Home</a>
+            <a href="#" class="notActive" :class="{active: titleMenu === 'about', notActive: titleMenu !== 'about'}" @click="changeMenu('about', $event)">About</a>
+            <a href="#" class="notActive" :class="{active: titleMenu === 'blog', notActive: titleMenu !== 'blog'}" @click="changeMenu('blog', $event)">Blog</a>
+          </div>
+
+          <button @click="addNumber">{{ counter }}</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
+
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                loginType: true,
+                name: 'Hello World',
+                titleMenu: 'home',
+                counter: 0,
+            },
+            methods: {
+                change: function () {
+                    this.loginType = !this.loginType
+                },
+                typeButton: function(event){
+                    alert(this.name)
+                    if(event){
+                      alert(event.target.tagName)
+                    }
+                },
+                changeMenu: function(message){
+                  console.log(message)
+                  event.preventDefault()
+                  this.titleMenu = message
+                },
+                addNumber: function() {
+                  this.counter++
+                }
+            }
+        })
+    </script>
+  </body>
+</html>

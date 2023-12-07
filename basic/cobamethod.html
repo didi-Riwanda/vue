@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div id="data">
+    <table border="1" cellpadding="5" cellspacing="0">
+        <tr>
+            <td>No</td>
+            <td>Nama</td>
+            <td>Alamat</td>
+        </tr>
+        <tr v-for="(mhs, index) in mahasiswa">
+            <td  v-text="index + 1"></td>
+            <td v-text="mhs.name"></td>
+            <td>{{ mhs.alamat }}</td>
+        </tr>
+    </table>
+
+    <ul>
+        <li v-for="x in 5" v-text="x"></li>
+    </ul>
+
+    <h3>Mencari Jenis Bilangan Menggunakan Function di Computed</h3>
+    <ul>
+        <li v-for="n in eventNumber" v-text="n"></li>
+    </ul>
+
+
+    <h3>Mencari Jenis Bilangan Menggunakan Function di Methods</h3>
+    <ul>
+        <li v-for="nomor in getNumberEven(number)" v-text="nomor"></li>
+    </ul>
+
+    <input type="checkbox" v-model="number" id="satu" value="1"> <label for="satu">Satu</label>
+    <input type="checkbox" v-model="number" id="dua" value="2"> <label for="dua">Dua</label>
+    <input type="checkbox" v-model="number" id="tiga" value="3"> <label for="tiga">Tiga</label>
+    <input type="checkbox" v-model="number" id="empat" value="4"> <label for="empat">Empat</label>
+    <input type="checkbox" v-model="number" id="lima" value="5"> <label for="lima">Lima</label>
+    <input type="checkbox" v-model="number" id="enam" value="6"> <label for="enam">Enam</label>
+
+    <ul>
+        <li v-for="n in number" v-text="n"></li>
+    </ul>
+</div>   
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
+    <script>
+        const vue = new Vue({
+            el: '#data',
+            data: {
+                mahasiswa: [
+                    {name: 'Didi Riwanda', alamat: 'Pekanbaru'},
+                    {name: 'Dio', alamat: 'Taluk Kuantan'},
+                ],
+                // number: [1, 2, 3, 4, 5],
+                number: []
+            },
+            methods: {
+                getNumberEven: (angka) => {
+                    return angka.filter(index => {
+                        return index % 2 === 0
+                    })
+                }
+            },
+            computed: {
+                eventNumber: function () {
+                    return this.number.filter(function(number){
+                        return number % 2 === 0
+                    })
+                },
+
+                // eventNumber: () => {
+                //     return this.number.filter( (number) => {
+                //         return number % 2 === 0
+                //     })
+                // }
+            }
+        })
+    </script>
+</body>
+</html>
+

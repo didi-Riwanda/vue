@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-for</title>
+</head>
+<body>
+
+    <div id="app">
+        <h3>Directive v-if : {{ number.length }}</h3>
+        <ul v-if="number.length > 0" >
+            <li v-for="n in checkNumber(number)" v-text="n"></li>
+        </ul>
+        <ul v-else>
+            <li v-text="message"></li>
+        </ul>
+
+
+        <h4>Directive v-show : {{ number.length }}</h4>
+        <ul v-show="number.length > 0">
+            <li v-for="n in number" v-text="n"></li>
+        </ul>
+
+        <h3>Gambar : {{ image }}</h3>
+        <div v-show="image === 'image/1.jpg'">
+            <img :src="image" width="200" alt="">
+        </div>
+
+        <div v-if="image === 'image/1.jpg'">
+            <img :src="image" width="200" alt="">
+        </div>
+        <div v-else>
+            Gambar Tidak Ada
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                message: 'Data Tidak Ada',
+                number: [1, 2, 3, 4, 5],
+                image: 'image/2.jpg'
+            },
+            methods: {
+                checkNumber: (number) => {
+                    return number.filter( index => {
+                        return index % 2 === 1
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>
